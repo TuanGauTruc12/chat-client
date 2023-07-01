@@ -3,13 +3,12 @@ import { Menu, MenuItem, styled } from "@mui/material";
 import { useState } from "react";
 
 const MenuOption = styled(MenuItem)`
-    font-size: 14px;
-    padding: 15px 60px 5px 24px;
-    color: #4A4A4A;
-
+  font-size: 14px;
+  padding: 15px 60px 5px 24px;
+  color: #4a4a4a;
 `;
 
-const HeaderMenu = () => {
+const HeaderMenu = ({ setOpenDrawer }) => {
   const [open, setOpen] = useState(null);
   const handleClose = () => {
     setOpen(null);
@@ -37,7 +36,14 @@ const HeaderMenu = () => {
           horizontal: "right",
         }}
       >
-        <MenuOption onClick={handleClose}>Profile</MenuOption>
+        <MenuOption
+          onClick={() => {
+            handleClose();
+            setOpenDrawer(true);
+          }}
+        >
+          Profile
+        </MenuOption>
       </Menu>
     </>
   );
