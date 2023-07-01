@@ -1,7 +1,6 @@
 import { Search as SearchIcon } from "@mui/icons-material";
 import { Box, InputBase, styled } from "@mui/material";
 
-
 const Compoment = styled(Box)`
   background: #fff;
   height: 45px;

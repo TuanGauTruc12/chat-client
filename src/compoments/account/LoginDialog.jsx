@@ -3,7 +3,6 @@ import { qrCodeImage } from "../../constants/data";
 import styled from "@emotion/styled";
 import { GoogleLogin } from "@react-oauth/google";
 import jwt_decode from "jwt-decode";
-import ChatDialog from "../chat/ChatDialog";
 import { AccountContext } from "../../context/AccountProvider";
 import { useContext } from "react";
 
