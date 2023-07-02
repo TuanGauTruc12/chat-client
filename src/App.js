@@ -1,5 +1,5 @@
 import "./App.css";
-import { Messenger } from "./compoments";
+import { Messenger } from "./compoment";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import AccountProvider from "./context/AccountProvider";
 

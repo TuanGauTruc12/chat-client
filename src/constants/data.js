@@ -1,7 +1,7 @@
 export const iconPDF =
   "https://cdn4.iconfinder.com/data/icons/logos-and-brands/512/27 Pdf File Type Adobe_logo_logos-512.png";
 export const defaultProfilePicture =
-  "https://static.straitstimes.com.sg/s3fs-public/articles/2020/12/01/af moneyheist 011220.jpg";
+  "https://static.straitstimes.com.sg/s3fs-public/articles/2020/12/01/af_moneyheist_011220.jpg";
 export const emptychatImage =
   "https://i.gadgets360cdn.com/large/whatsapp_multi_device_support_update_image_1636207150180.jpg";
 export const qrCodeImage =

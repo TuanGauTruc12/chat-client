@@ -4,7 +4,6 @@ import { Box, InputBase, styled } from "@mui/material";
 const Compoment = styled(Box)`
   background: #fff;
   height: 45px;
-  border-bottom: 1px solid #f2f2f2;
   display: flex;
   align-items: center;
 `;
@@ -32,14 +31,17 @@ const InputField = styled(InputBase)`
   font-size: 14px;
 `;
 
-const Search = () => {
+const Search = ({ setSearch }) => {
   return (
     <Compoment>
       <Wrapper>
         <Icon>
           <SearchIcon fontSize="small" />
         </Icon>
-        <InputField placeholder="Search or start new chat" />
+        <InputField
+          placeholder="Search or start new chat"
+          onChange={(e) => setSearch(e.target.value)}
+        />
       </Wrapper>
     </Compoment>
   );

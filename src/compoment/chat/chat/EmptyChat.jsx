@@ -1,4 +1,4 @@
-import { Box, Typography, styled, Divider } from "@mui/material";
+import { Box, Typography, styled } from "@mui/material";
 import { emptychatImage } from "../../../constants/data";
 
 const Compoment = styled(Box)`
@@ -9,6 +9,10 @@ const Compoment = styled(Box)`
 
 const Container = styled(Box)`
   padding: 0 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 `;
 
 const Image = styled("img")({
@@ -29,15 +33,12 @@ const SubTitle = styled(Typography)`
   color: #667781;
   font-weight: 400;
   font-family: inherit;
-`;
-
-const StyledDivider = styled(Divider)`
-  opacity: 0.4;
-  border-width: 2px;
-  margin-top: 15px;
-  width: 50%;
-  margin-left: auto;
-  margin-right: auto;
+  :last-child {
+    border-bottom: 2px solid #41525d;
+    padding-bottom: 20px;
+    width: fit-content;
+    margin: 0 auto;
+  }
 `;
 
 const EmptyChat = () => {
@@ -53,7 +54,6 @@ const EmptyChat = () => {
           Use WhatsApp on up to 4 linked devices and 1 phone at the same time.
         </SubTitle>
       </Container>
-      <StyledDivider />
     </Compoment>
   );
 };
