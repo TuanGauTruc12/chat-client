@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext, Fragment } from "react";
 import { getUsers } from "../../../service/api";
 import { Box, styled, Divider } from "@mui/material";
 import Conversation from "./Conversation";
@@ -21,7 +21,9 @@ const Conversations = ({ search }) => {
   useEffect(() => {
     const fetchData = async () => {
       const reponse = await getUsers();
-      const filteredData = reponse.filter((user) => user.name.toLowerCase().includes(search.toLowerCase()));
+      const filteredData = reponse.filter((user) =>
+        user.name.toLowerCase().includes(search.toLowerCase())
+      );
       setUsers(filteredData);
     };
 
@@ -34,12 +36,12 @@ const Conversations = ({ search }) => {
         .filter((user) => {
           return user.sub !== +account.sub;
         })
-        .map((user) => (
-          <>
+        .map((user, index) => (
+          <Fragment key={index}>
             <StyleDivider />
             <Conversation user={user} />
             <StyleDivider />
-          </>
+          </Fragment>
         ))}
     </Compoment>
   );

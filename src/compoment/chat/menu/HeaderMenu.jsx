@@ -9,9 +9,9 @@ const MenuOption = styled(MenuItem)`
 `;
 
 const HeaderMenu = ({ setOpenDrawer }) => {
-  const [open, setOpen] = useState(null);
+  const [open, setOpen] = useState(false);
   const handleClose = () => {
-    setOpen(null);
+    setOpen(false);
   };
 
   const handleClick = (e) => {
@@ -26,7 +26,7 @@ const HeaderMenu = ({ setOpenDrawer }) => {
         keepMounted
         open={open}
         onClose={handleClose}
-        getContentAnchorEl={null}
+        getcontentanchorel={null}
         anchorOrigin={{
           vertical: "bottom",
           horizontal: "center",

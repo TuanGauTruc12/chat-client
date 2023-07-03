@@ -9,6 +9,7 @@ const Compoment = styled(Box)`
 
 const Container = styled(Box)`
   padding: 0 200px;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;

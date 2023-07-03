@@ -17,6 +17,7 @@ const Compoment = styled(Box)`
 
 const Menu = () => {
   const [search, setSearch] = useState("");
+  
   return (
     <Compoment>
       <Header />

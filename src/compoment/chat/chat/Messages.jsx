@@ -1,29 +1,72 @@
-import { Box, styled } from "@mui/material"
+import { Box, styled } from "@mui/material";
 import Footer from "./Footer";
-
-const Wrapper = styled (Box)`
-    background-image: url(${'https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png'});
-    background-size: 75%;
-    position: relative;
-`;
+import { useContext, useState, useEffect } from "react";
+import { AccountContext } from "../../../context/AccountProvider";
+import { getMessages, newMessage } from "../../../service/api";
+import Message from "./Message";
 
 const Compoment = styled(Box)`
-  height: calc(100%-55px);
   margin-bottom: 2px;
   overflow-y: scroll;
+  background-image: url(${"https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png"});
+  background-size: 100%;
+  height: 100%;
+
+  
+
+  & > :last-child{
+    margin-bottom: 70px;
+  }
+
+  & > :first-of-type{
+    margin-top: 70px;
+  }
 `;
 
+const Messages = ({ person, conversation }) => {
+  const [value, setValue] = useState("");
+  const { account } = useContext(AccountContext);
+  const [messages, setMessages] = useState([]);
 
-const Messages = ({person}) => {
-  
+  const getMessagesDetail = async (_id) => {
+    let data = await getMessages(_id);
+    setMessages(data);
+  };
+
+  useEffect(() => {
+    conversation && getMessagesDetail(conversation._id);
+  }, [person._id, conversation]);
+
+  const sendText = async (e) => {
+    const code = e.keyCode || e.which;
+    if (code === 13) {
+      let message = {
+        senderId: account.sub,
+        receiverId: person.sub,
+        conversationId: conversation._id,
+        type: "text",
+        text: value,
+      };
+
+      await newMessage(message);
+      getMessagesDetail(conversation._id);
+      setValue("");
+    }
+  };
+
   return (
-    <Wrapper>
-      <Compoment>
+    <>
 
-      </Compoment>
-      <Footer />
-    </Wrapper>
-  )
-}
+        <Compoment>
+          {messages &&
+            messages.map((message) => (
+              <Message key={message} message={message} />
+            ))}
+        </Compoment>
+    
+      <Footer sendText={sendText} setValue={setValue} value={value} />
+    </>
+  );
+};
 
-export default Messages
+export default Messages;

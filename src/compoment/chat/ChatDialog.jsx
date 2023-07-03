@@ -3,7 +3,7 @@ import Menu from "./menu/Menu";
 import ChatBox from "./chat/ChatBox";
 import { useContext } from "react";
 import { AccountContext } from "../../context/AccountProvider";
-import EmptyChat from './chat/EmptyChat';
+import EmptyChat from "./chat/EmptyChat";
 
 const dialogStyle = {
   height: "100%",
@@ -35,17 +35,18 @@ const ChatDialog = () => {
 
   return (
     <Dialog
-      open={true}
-      PaperProps={{ sx: dialogStyle }}
-      hideBackdrop={true}
-      maxWidth="md"
+      open={true} PaperProps={{ sx: dialogStyle }} hideBackdrop={true} maxWidth="md"
     >
       <Compoment>
         <LeftCompoment>
           <Menu />
         </LeftCompoment>
         <RightCompoment>
-          {Object.keys(person).length ? <ChatBox/> : <EmptyChat />}
+          {Object.keys(person).length ? (
+            <ChatBox key="chatbox" />
+          ) : (
+            <EmptyChat key="emptychat" />
+          )}
         </RightCompoment>
       </Compoment>
     </Dialog>
