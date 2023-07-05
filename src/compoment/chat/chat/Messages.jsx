@@ -12,13 +12,11 @@ const Compoment = styled(Box)`
   background-size: 100%;
   height: 100%;
 
-  
-
-  & > :last-child{
+  & > :last-child {
     margin-bottom: 70px;
   }
 
-  & > :first-of-type{
+  & > :first-of-type {
     margin-top: 70px;
   }
 `;
@@ -27,15 +25,16 @@ const Messages = ({ person, conversation }) => {
   const [value, setValue] = useState("");
   const { account } = useContext(AccountContext);
   const [messages, setMessages] = useState([]);
-
-  const getMessagesDetail = async (_id) => {
-    let data = await getMessages(_id);
-    setMessages(data);
-  };
+  const [file, setFile] = useState();
+  const [newMessageFlag, setNewMessageFlag] = useState(false);
 
   useEffect(() => {
-    conversation && getMessagesDetail(conversation._id);
-  }, [person._id, conversation]);
+    const getMessagesDetail = async () => {
+      let data = await getMessages(conversation._id);
+      setMessages(data);
+    };
+    conversation && getMessagesDetail();
+  }, [person._id, conversation, newMessageFlag]);
 
   const sendText = async (e) => {
     const code = e.keyCode || e.which;
@@ -49,22 +48,28 @@ const Messages = ({ person, conversation }) => {
       };
 
       await newMessage(message);
-      getMessagesDetail(conversation._id);
+
       setValue("");
+      setNewMessageFlag((prev) => !prev);
     }
   };
 
   return (
     <>
+      <Compoment>
+        {messages &&
+          messages.map((message) => (
+            <Message key={message._id} message={message} />
+          ))}
+      </Compoment>
 
-        <Compoment>
-          {messages &&
-            messages.map((message) => (
-              <Message key={message} message={message} />
-            ))}
-        </Compoment>
-    
-      <Footer sendText={sendText} setValue={setValue} value={value} />
+      <Footer
+        sendText={sendText}
+        setValue={setValue}
+        value={value}
+        file={file}
+        setFile={setFile}
+      />
     </>
   );
 };

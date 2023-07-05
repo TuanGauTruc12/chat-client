@@ -54,3 +54,11 @@ export const getMessages = async (id) => {
     console.log("Error while getMessages API", error.message);
   }
 };
+
+export const uploadFile = async()=>{
+  try {
+    return axios.post(`${process.env.REACT_APP_API}/file/upload`)
+  } catch (error) {
+    console.log("Error while uploadFile API", error.message);
+  }
+}
