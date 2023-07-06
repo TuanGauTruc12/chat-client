@@ -19,3 +19,28 @@ export const formatDate = (date) => {
     return `${format} ${moment().diff(objDate, "years")} year ago`;
   }
 };
+
+export const downloadMedia = (e, fileName) => {
+  e.preventDefault();
+
+  try {
+    fetch(fileName)
+      .then((res) => res.blob())
+      .then((blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.style.display = "none";
+        a.href = url;
+
+        a.download = "" + fileName.split("/").pop() + "";
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+      })
+      .catch((error) =>
+        console.log("Error while downloading the file ", error.mesage)
+      );
+  } catch (error) {
+    console.log("Error while  the file ", error.mesage);
+  }
+};

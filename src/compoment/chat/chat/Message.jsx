@@ -1,7 +1,9 @@
 import { useContext } from "react";
 import { Box, Typography, styled } from "@mui/material";
-import { formatDate } from "../../../utils/common-utils";
+import { downloadMedia, formatDate } from "../../../utils/common-utils";
 import { AccountContext } from "../../../context/AccountProvider";
+import GetAppIcon from "@mui/icons-material/GetApp";
+import { iconPDF } from "../../../constants/data";
 
 const Own = styled(Box)`
   background: #dcf8c6;
@@ -40,24 +42,104 @@ const Time = styled(Typography)`
   word-break: keep-all;
 `;
 
+const FileStyle = styled(Box)`
+  position: relative;
+  max-height: 100px;
+  padding-bottom: 12px;
+  & img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+  }
+  & > div {
+    display: flex;
+    p {
+      flex: auto;
+      max-width: 100%;
+      height: 80px;
+      margin: 0 auto;
+      font-size: 16px;
+      line-height: 1.2;
+      -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+  & > :last-child {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2px;
+
+    & > svg {
+      cursor: pointer;
+      font-weight: 500;
+      color: black;
+      &:hover{
+        opacity: .6;
+      }
+    }
+  }
+`;
+
 const Message = ({ message }) => {
   const { account } = useContext(AccountContext);
-  
   return (
     <>
       {account.sub === message.senderId ? (
         <Own>
-          <Text>{message.text}</Text>
-          <Time>{formatDate(message.createdAt)}</Time>
+          {message.type === "file" ? (
+            <ImageMessage message={message} />
+          ) : (
+            <TextMessage message={message} />
+          )}
         </Own>
       ) : (
         <Wrapper>
-          <Text>{message.text}</Text>
-          <Time>{formatDate(message.createdAt)}</Time>
+          {message.type === "file" ? (
+            <ImageMessage message={message} />
+          ) : (
+            <TextMessage message={message} />
+          )}
         </Wrapper>
       )}
     </>
   );
 };
 
+const TextMessage = ({ message }) => {
+  return (
+    <>
+      <Text>{message.text}</Text>
+      <Time>{formatDate(message.createdAt)}</Time>
+    </>
+  );
+};
+
+const ImageMessage = ({ message }) => {
+  return (
+    <FileStyle>
+      {message?.text?.includes(".pdf") ? (
+        <Box>
+          <img src={iconPDF} alt="pdf" />
+          <Typography>{message.text.split("/").pop()}</Typography>
+        </Box>
+      ) : (
+        <Box>
+          <img src={message.text} alt={message.text} />
+          <Typography>{message.text.split("/").pop()}</Typography>
+        </Box>
+      )}
+
+      <Time>
+        <GetAppIcon onClick={(e)=>downloadMedia(e, message.text)}/>
+        <span>{formatDate(message.createdAt)}</span>
+      </Time>
+    </FileStyle>
+  );
+};
 export default Message;

@@ -37,22 +37,24 @@ const ClipIcon = styled(AttachFile)`
   transform: rotate(45deg);
 `;
 
-const Footer = ({ sendText, setValue, value, file, setFile }) => {
+const Footer = ({ sendText, setValue, value, file, setFile, setImage }) => {
+  
   const handleFile = (e) => {
     setFile(e.target.files[0]);
     setValue(e.target.files[0].name);
   };
 
-  useEffect(()=>{
-    const upload = async()=>{
-      if(file){
-        const data = new FormData();
-        data.append('file', file);
-        data.append('name', file.name);
-        //
-        await uploadFile(data);        
+  useEffect(() => {
+    const upload = async () => {
+      if (file) {
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("name", file.name);
+
+        let res = await uploadFile(formData);
+        setImage(res.data);
       }
-    }
+    };
 
     upload();
   }, [file]);

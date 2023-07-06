@@ -11,6 +11,7 @@ const Compoment = styled(Box)`
   background-image: url(${"https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png"});
   background-size: 100%;
   height: 100%;
+  overflow-x: hidden;
 
   & > :last-child {
     margin-bottom: 70px;
@@ -27,6 +28,7 @@ const Messages = ({ person, conversation }) => {
   const [messages, setMessages] = useState([]);
   const [file, setFile] = useState();
   const [newMessageFlag, setNewMessageFlag] = useState(false);
+  const [image, setImage] = useState("");
 
   useEffect(() => {
     const getMessagesDetail = async () => {
@@ -39,16 +41,28 @@ const Messages = ({ person, conversation }) => {
   const sendText = async (e) => {
     const code = e.keyCode || e.which;
     if (code === 13) {
-      let message = {
-        senderId: account.sub,
-        receiverId: person.sub,
-        conversationId: conversation._id,
-        type: "text",
-        text: value,
-      };
+      let message = {};
+      if (!file) {
+        message = {
+          senderId: account.sub,
+          receiverId: person.sub,
+          conversationId: conversation._id,
+          type: "text",
+          text: value,
+        };
+      } else {
+        message = {
+          senderId: account.sub,
+          receiverId: person.sub,
+          conversationId: conversation._id,
+          type: "file",
+          text: image,
+        };
+      }
 
       await newMessage(message);
-
+      setFile("");
+      setImage("");
       setValue("");
       setNewMessageFlag((prev) => !prev);
     }
@@ -69,6 +83,7 @@ const Messages = ({ person, conversation }) => {
         value={value}
         file={file}
         setFile={setFile}
+        setImage={setImage}
       />
     </>
   );
