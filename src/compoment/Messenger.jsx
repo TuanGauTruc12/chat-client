@@ -4,6 +4,7 @@ import { useContext } from "react";
 import { AccountContext } from "../context/AccountProvider";
 import ChatDialog from "./chat/ChatDialog";
 
+
 const LoginHeader = styled(AppBar)`
   height: 220px;
   background-color: #00bfa5;

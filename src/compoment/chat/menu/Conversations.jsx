@@ -16,7 +16,7 @@ const StyleDivider = styled(Divider)`
 
 const Conversations = ({ search }) => {
   const [users, setUsers] = useState([]);
-  const { account } = useContext(AccountContext);
+  const { account, socket, setActiveUsers } = useContext(AccountContext);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,6 +29,13 @@ const Conversations = ({ search }) => {
 
     fetchData();
   }, [search]);
+
+  useEffect(() => {
+    socket.current.emit("addUser", account);
+    socket.current.on("getUsers", (users) => {
+      setActiveUsers(users);
+    });
+  }, [account]);
 
   return (
     <Compoment>

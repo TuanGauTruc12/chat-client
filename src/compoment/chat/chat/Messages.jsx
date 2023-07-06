@@ -1,6 +1,6 @@
-import { Box, styled } from "@mui/material";
+import { Box, styled, useForkRef } from "@mui/material";
 import Footer from "./Footer";
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect, useRef } from "react";
 import { AccountContext } from "../../../context/AccountProvider";
 import { getMessages, newMessage } from "../../../service/api";
 import Message from "./Message";
@@ -24,11 +24,21 @@ const Compoment = styled(Box)`
 
 const Messages = ({ person, conversation }) => {
   const [value, setValue] = useState("");
-  const { account } = useContext(AccountContext);
+  const { account, socket, newMessageFlag, setNewMessageFlag } = useContext(AccountContext);
   const [messages, setMessages] = useState([]);
   const [file, setFile] = useState();
-  const [newMessageFlag, setNewMessageFlag] = useState(false);
   const [image, setImage] = useState("");
+  const scrollRef = useRef();
+  const [incomingMessage, setIncomingMessage] = useState(null);
+
+  useEffect(() => {
+    socket.current.on("getMessage", (data) => {
+      setIncomingMessage({
+        ...data,
+        createdAt: Date.now(),
+      });
+    });
+  }, []);
 
   useEffect(() => {
     const getMessagesDetail = async () => {
@@ -37,6 +47,16 @@ const Messages = ({ person, conversation }) => {
     };
     conversation && getMessagesDetail();
   }, [person._id, conversation, newMessageFlag]);
+
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView({ transition: "snooth" });
+  }, [messages]);
+
+  useEffect(() => {
+    incomingMessage &&
+      conversation?.members.includes(incomingMessage.senderId) &&
+      setMessages((prev) => [...prev, incomingMessage]);
+  }, [incomingMessage, conversation]);
 
   const sendText = async (e) => {
     const code = e.keyCode || e.which;
@@ -60,6 +80,8 @@ const Messages = ({ person, conversation }) => {
         };
       }
 
+      socket.current.emit("sendMessage", message);
+
       await newMessage(message);
       setFile("");
       setImage("");
@@ -73,7 +95,9 @@ const Messages = ({ person, conversation }) => {
       <Compoment>
         {messages &&
           messages.map((message) => (
-            <Message key={message._id} message={message} />
+            <div key={message._id} ref={scrollRef}>
+              <Message message={message} />
+            </div>
           ))}
       </Compoment>
 

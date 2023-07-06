@@ -22,3 +22,8 @@ code {
 ::-webkit-scrollbar-track {
   background: hsla(0,0%,100%,.1);
 }
+
+::-webkit-scrollbar{
+  width: 6px !important;
+  height: 6px !important;
+}
